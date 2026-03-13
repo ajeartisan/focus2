@@ -1,6 +1,25 @@
 -- Focus Dashboard: Supabase-First Schema
 -- Run this in Supabase SQL Editor
 
+-- 0. PREREQUISITE TABLES
+CREATE TABLE IF NOT EXISTS workspaces (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL DEFAULT 'My Workspace',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS workspace_members (
+  workspace_id uuid NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL,
+  role text NOT NULL DEFAULT 'owner',
+  created_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (workspace_id, user_id)
+);
+ALTER TABLE workspace_members ENABLE ROW LEVEL SECURITY;
+CREATE POLICY workspace_members_access ON workspace_members
+  USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+
+-- HELPER
 CREATE EXTENSION IF NOT EXISTS moddatetime;
 
 CREATE OR REPLACE FUNCTION user_workspace_ids()
