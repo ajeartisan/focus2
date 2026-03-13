@@ -509,6 +509,345 @@ input { font: inherit; }
 .drop-zone:has(.task-item:active) { border: none; }
 /* dragover styling via JS class */
 
+/* ── Kanban Board ──────────────────────────────────────── */
+.kanban-board { padding: 0.5rem 0; }
+.kanban-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.kanban-title { font-size: 1.25rem; font-weight: 700; }
+.kanban-filter {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background: var(--bg);
+}
+.kanban-lanes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.kanban-lane {
+  background: var(--surface);
+  border-radius: var(--radius);
+  min-height: 200px;
+  transition: box-shadow 0.15s;
+}
+.kanban-lane-dragover {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.kanban-lane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.kanban-lane-count {
+  background: var(--border);
+  border-radius: 10px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.kanban-lane-body {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.kanban-card {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  box-shadow: var(--shadow);
+  cursor: grab;
+  transition: box-shadow 0.15s;
+}
+.kanban-card:active { cursor: grabbing; }
+.kanban-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.kanban-card.overdue { border-left: 3px solid var(--high); }
+.kanban-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+.kanban-card-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kanban-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+}
+
+/* ── Projects View ────────────────────────────────────── */
+.projects-view { padding: 0.5rem 0; }
+.projects-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+.projects-group {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+.projects-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+}
+.projects-group-header:hover { background: var(--surface); }
+.projects-group-name { flex: 1; }
+.projects-chevron {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.projects-task-list {
+  padding: 0 1rem 0.5rem;
+}
+.projects-status-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+.projects-status-badge[data-status="doing"] {
+  background: rgba(74, 111, 165, 0.15);
+  color: var(--accent);
+}
+.projects-status-badge[data-status="done"] {
+  background: rgba(67, 160, 71, 0.15);
+  color: #43A047;
+}
+
+/* ── Schedule View ────────────────────────────────────── */
+.schedule-view { padding: 0.5rem 0; }
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.schedule-title { font-size: 1.25rem; font-weight: 700; }
+.schedule-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.schedule-nav button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.schedule-nav button:hover { background: var(--surface); }
+.schedule-body {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 1rem;
+  align-items: start;
+}
+.schedule-calendar {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+.schedule-day-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.schedule-cell {
+  background: var(--bg);
+  padding: 0.4rem;
+  min-height: 70px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.schedule-cell:hover { background: var(--surface); }
+.schedule-cell.outside { opacity: 0.35; }
+.schedule-cell.today .schedule-cell-number {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.schedule-cell.selected { background: rgba(74, 111, 165, 0.08); }
+.schedule-cell-number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.schedule-cell-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.schedule-detail {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.schedule-detail-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.schedule-sidebar {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+.schedule-sidebar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Household View ───────────────────────────────────── */
+.household-view { padding: 0.5rem 0; }
+.household-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.household-title { font-size: 1.25rem; font-weight: 700; }
+.household-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.household-filters select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background: var(--bg);
+}
+.household-table-wrap {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+.household-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.household-th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+.household-th:hover { color: var(--text); }
+.household-th.sorted { color: var(--accent); }
+.household-sort-arrow { font-size: 0.7rem; }
+.household-row td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--surface);
+}
+.household-row:hover td { background: var(--surface); }
+.household-done td { opacity: 0.5; }
+.household-overdue td:first-child { color: var(--overdue); }
+.household-title-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+}
+.household-inline-select {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.8rem;
+  background: transparent;
+  cursor: pointer;
+}
+.household-inline-select:hover { border-color: var(--border); background: var(--surface); }
+.household-inline-input {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  width: 100%;
+  background: var(--bg);
+}
+.household-add-row td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+.household-add-form {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.household-add-form input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+}
+
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
@@ -517,4 +856,9 @@ input { font: inherit; }
   .dashboard-grid { grid-template-columns: 1fr; }
   .sidebar { display: none; }
   .app-shell { flex-direction: column; }
+  .kanban-lanes { grid-template-columns: 1fr; }
+  .schedule-body { grid-template-columns: 1fr; }
+  .schedule-sidebar { max-height: none; }
+  .household-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .household-table { min-width: 600px; }
 }

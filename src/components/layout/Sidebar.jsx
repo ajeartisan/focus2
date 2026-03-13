@@ -25,11 +25,7 @@ export default function Sidebar() {
   const setCurrentUser = useAppStore(s => s.setCurrentUser);
 
   const handleNav = (id) => {
-    if (id === 'dashboard') {
-      setCurrentView(id);
-    } else {
-      alert(`${NAV_ITEMS.find(n => n.id === id)?.label} — Coming soon`);
-    }
+    setCurrentView(id);
   };
 
   const handleSignOut = async () => {
